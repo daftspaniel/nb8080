@@ -8,6 +8,6 @@ String getStoredValue(String key, String defaultValue) {
   return value;
 }
 
-void storeValue(String key, String value){
+void storeValue(String key, String value) {
   window.localStorage[key] = value;
 }

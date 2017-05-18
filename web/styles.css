@@ -20,6 +20,8 @@ html, body {
     padding: 5px;
     box-shadow: 6px 6px 3px #333333;
     overflow: hidden;
+    overflow-y: auto;
+
     width: 200px;
     height: 200px;
 }
