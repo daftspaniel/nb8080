@@ -10,22 +10,19 @@ class Note {
   DivElement note;
   Board board;
 
-  void loadNote(String loadId) {
-    note.innerHtml = getStoredValue(loadId, "Welcome to Notes Board 8080");
+  void loadNote() {
+
+    note.innerHtml = getStoredValue(id, "Welcome to Notes Board 8080");
     note
-      ..style.top = getStoredValue('y-$loadId', "100px")
-      ..style.left = getStoredValue('x-$loadId', "100px");
-    id = loadId;
+      ..style.top = getStoredValue('y-$id', "100px")
+      ..style.left = getStoredValue('x-$id', "100px");
   }
 
   Note(DivElement newNote, String newId) {
     id = newId;
     note = newNote;
 
-    storeValue(id, note.innerHtml);
-    savePosition(75, 75);
-
-    note.onKeyDown.listen((KeyboardEvent k) {
+    note.onKeyUp.listen((KeyboardEvent k) {
       storeValue(id, note.innerHtml);
     });
 
@@ -34,6 +31,11 @@ class Note {
       y = e.client.y - (note.offsetTop + 200);
       board.activeNote = this;
     });
+  }
+
+  void saveNote(){
+    storeValue(id, note.innerHtml);
+    savePosition(75, 75);
   }
 
   void savePosition(int pageX, int pageY) {
