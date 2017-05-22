@@ -22,7 +22,7 @@ class Board {
       Ids = JSON.decode(idJSON);
     }
     Ids.forEach((int id) {
-      addNote(id);
+      if (id > 0) addNote(id);
     });
   }
 
@@ -32,12 +32,7 @@ class Board {
     });
 
     board.onDrop.listen((MouseEvent e) {
-      activeNote.savePosition(e.page.x, e.page.y);
-//      activeNote.note.style.top = "${e.page.y + activeNote.x}px";
-//      activeNote.note.style.left = "${e.page.x + activeNote.y}px";
-//
-//      storeValue('y-${activeNote.id}', activeNote.note.style.top);
-//      storeValue('x-${activeNote.id}', activeNote.note.style.left);
+      activeNote.saveWithPosition(e.page.x, e.page.y);
     });
   }
 

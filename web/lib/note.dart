@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:html';
 
 import 'board.dart';
 import 'localstorageutil.dart';
+
 
 class Note {
   String id = "1";
@@ -9,21 +11,14 @@ class Note {
   int y = 0;
   DivElement note;
   Board board;
-
-  void loadNote() {
-
-    note.innerHtml = getStoredValue(id, "Welcome to Notes Board 8080");
-    note
-      ..style.top = getStoredValue('y-$id', "100px")
-      ..style.left = getStoredValue('x-$id', "100px");
-  }
+  Map plainNote = new Map();
 
   Note(DivElement newNote, String newId) {
     id = newId;
     note = newNote;
 
     note.onKeyUp.listen((KeyboardEvent k) {
-      storeValue(id, note.innerHtml);
+      save();
     });
 
     note.onMouseDown.listen((MouseEvent e) {
@@ -33,16 +28,43 @@ class Note {
     });
   }
 
-  void saveNote(){
-    storeValue(id, note.innerHtml);
-    savePosition(75, 75);
+  void saveNote() {
+    saveWithPosition(75, 75);
   }
 
-  void savePosition(int pageX, int pageY) {
+  void loadNote() {
+    String stored = getStoredValue(id, null);
+
+    if (stored == null) {
+      print("Creating default for $id");
+      createAndSaveDefaultNote();
+    } else {
+      plainNote = JSON.decode(stored);
+      note.innerHtml = plainNote['text'];
+      note.style.top = plainNote['top'];
+      note.style.left = plainNote['left'];
+    }
+  }
+
+  void createAndSaveDefaultNote() {
+    plainNote['text'] = "Welcome to Notes Board 8080";
+    plainNote['top'] = "100px";
+    plainNote['left'] = "100px";
+    note.innerHtml = plainNote['text'];
+
+    saveWithPosition(75, 75);
+  }
+
+  void save() {
+    plainNote['text'] = note.innerHtml;
+    plainNote['left'] = note.style.left;
+    plainNote['top'] = note.style.top;
+    storeValue(id, JSON.encode(plainNote));
+  }
+
+  void saveWithPosition(int pageX, int pageY) {
     note.style.top = "${pageY + x}px";
     note.style.left = "${pageX + y}px";
-
-    storeValue('y-${id}', note.style.top);
-    storeValue('x-${id}', note.style.left);
+    save();
   }
 }
