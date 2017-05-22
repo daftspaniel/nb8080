@@ -24,4 +24,12 @@ html, body {
 
     width: 200px;
     height: 200px;
+    border: 1px black outset;
+    border-radius: 4px;
+}
+
+#addButton {
+    color: white;
+    font-size: 25pt;
+    padding: 10px;
 }

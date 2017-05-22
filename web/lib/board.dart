@@ -53,6 +53,7 @@ class Board {
       ..draggable = true
       ..contentEditable = 'true';
     board.append(newNoteDiv);
+    newNoteDiv.focus();
 
     String id;
     Note newNote;
