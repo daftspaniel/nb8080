@@ -24,7 +24,7 @@ class Note {
     note.onMouseDown.listen((MouseEvent e) {
       x = e.client.x - (note.offsetLeft + 200);
       y = e.client.y - (note.offsetTop + 200);
-      board.activeNote = this;
+      board.setActiveNote(this);
     });
   }
 

@@ -46,7 +46,6 @@ class Board {
   }
 
   void addNote(int i) {
-    print('add note $i');
     DivElement newNoteDiv = new DivElement();
     newNoteDiv
       ..classes.add('note')
@@ -70,7 +69,13 @@ class Board {
 
     newNote.board = this;
     notes.add(newNote);
-    activeNote = newNote;
+    setActiveNote(newNote);
+  }
+
+  void setActiveNote(Note note) {
+    activeNote = note;
+    notes.forEach((Note note) => note.note.style.zIndex = '10');
+    activeNote.note.style.zIndex = '100';
   }
 }
 

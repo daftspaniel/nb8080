@@ -16,7 +16,7 @@ html, body {
 
 .note {
     position: absolute;
-    background-color: beige;
+    background-color: #f1f555;
     padding: 5px;
     box-shadow: 6px 6px 3px #333333;
     overflow: hidden;
