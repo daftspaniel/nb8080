@@ -4,7 +4,6 @@ import 'dart:html';
 import 'board.dart';
 import 'localstorageutil.dart';
 
-
 class Note {
   String id = "1";
   int x = 0;
@@ -22,8 +21,8 @@ class Note {
     });
 
     note.onMouseDown.listen((MouseEvent e) {
-      x = e.client.x - (note.offsetLeft + 200);
-      y = e.client.y - (note.offsetTop + 200);
+      x = e.client.x - (note.offsetLeft);
+      y = e.client.y - (note.offsetTop);
       board.setActiveNote(this);
     });
   }
@@ -63,8 +62,8 @@ class Note {
   }
 
   void saveWithPosition(int pageX, int pageY) {
-    note.style.top = "${pageY + x}px";
-    note.style.left = "${pageX + y}px";
+    note.style.top = "${pageY - x}px";
+    note.style.left = "${pageX - y}px";
     save();
   }
 }
