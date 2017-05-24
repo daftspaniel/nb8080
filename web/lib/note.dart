@@ -62,8 +62,8 @@ class Note {
   }
 
   void saveWithPosition(int pageX, int pageY) {
-    note.style.top = "${pageY - x}px";
-    note.style.left = "${pageX - y}px";
+    note.style.top = "${pageY - y}px";
+    note.style.left = "${pageX - x}px";
     save();
   }
 }
