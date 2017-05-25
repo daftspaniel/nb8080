@@ -35,7 +35,7 @@ class Note {
   }
 
   void saveNote() {
-    saveWithPosition(75, 75);
+    move(75, 75);
   }
 
   void loadNote() {
@@ -61,7 +61,7 @@ class Note {
     plainNote['left'] = "100px";
     note.innerHtml = plainNote['text'];
 
-    saveWithPosition(75, 75);
+    move(75, 75);
   }
 
   void save() {
@@ -71,9 +71,9 @@ class Note {
     storeValue(id, JSON.encode(plainNote));
   }
 
-  void saveWithPosition(int pageX, int pageY) {
-    note.style.top = "${pageY - y}px";
-    note.style.left = "${pageX - x}px";
+  void move(int mx, int my) {
+    note.style.top = "${my}px";
+    note.style.left = "${mx}px";
     save();
   }
 }

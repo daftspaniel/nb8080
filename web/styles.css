@@ -6,6 +6,7 @@ html, body {
     margin: 0;
     padding: 0;
     font-family: 'Roboto', sans-serif;
+    overflow:visible;
 }
 
 .board {
@@ -27,7 +28,10 @@ html, body {
     border: 1px black outset;
     border-radius: 4px;
 }
-
+.note:focus {
+    box-shadow: 6px 6px 6px #33ee33;
+    background-color: #f4f858;
+}
 #addButton {
     color: white;
     font-size: 25pt;
@@ -36,6 +40,20 @@ html, body {
 
 #minusButton {
     color: white;
-    font-size: 32pt;
+    font-size: 36pt;
     padding: 10px;
+}
+
+#arrangeButton {
+    color: white;
+    font-size: 22pt;
+    padding: 10px;
+}
+
+#sidebar {
+    width: 40px;
+    background-color: #a5c3d7;
+    height: 100%;
+    text-align: center;
+    color: white;
 }

@@ -5,6 +5,9 @@ import 'localstorageutil.dart';
 import 'note.dart';
 
 class Board {
+
+  final int noteWidth = 200;
+
   int newId = -1;
   DivElement board = querySelector('#board');
   Note activeNote;
@@ -32,7 +35,7 @@ class Board {
     });
 
     board.onDrop.listen((MouseEvent e) {
-      activeNote.saveWithPosition(e.page.x, e.page.y);
+      activeNote.move(e.page.x - activeNote.x, e.page.y - activeNote.y);
     });
   }
 
@@ -91,6 +94,21 @@ class Board {
     if (notes.length > 0) {
       activeNote = notes[0];
     }
+  }
+
+  void arrange() {
+    int x = 60;
+    int y = 30;
+    int sx = 60;
+    notes.forEach((Note note) {
+      note.move(x, y);
+      x = x + noteWidth + 30;
+      if (x + noteWidth > board.clientWidth) {
+        y += 100 + 30;
+        sx += 10;
+        x = sx;
+      }
+    });
   }
 }
 
