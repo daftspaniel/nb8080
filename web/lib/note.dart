@@ -24,6 +24,7 @@ class Note {
       x = e.client.x - (note.offsetLeft);
       y = e.client.y - (note.offsetTop);
       board.setActiveNote(this);
+      note.style.transition = 'none';
     });
 
     note.onDragStart.listen((e) {
@@ -31,6 +32,7 @@ class Note {
     });
     note.onDragEnd.listen((e) {
       note.style.opacity = "1";
+      note.style.transition = 'top 0.5s, left 0.5s';
     });
   }
 

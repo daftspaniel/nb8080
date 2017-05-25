@@ -6,7 +6,7 @@ html, body {
     margin: 0;
     padding: 0;
     font-family: 'Roboto', sans-serif;
-    overflow:visible;
+    overflow: visible;
 }
 
 .board {
@@ -27,11 +27,14 @@ html, body {
     height: 200px;
     border: 1px black outset;
     border-radius: 4px;
+    transition: top 0.5s, left 0.5s;
 }
+
 .note:focus {
     box-shadow: 6px 6px 6px #33ee33;
     background-color: #f4f858;
 }
+
 #addButton {
     color: white;
     font-size: 25pt;
