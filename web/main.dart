@@ -6,6 +6,7 @@ import 'dart:html';
 import 'lib/board.dart';
 
 DivElement add = querySelector('#addButton');
+DivElement minus = querySelector('#minusButton');
 Board mainBoard = new Board();
 
 void main() {
@@ -13,5 +14,8 @@ void main() {
 
   add.onClick.listen((MouseEvent me) {
     mainBoard.addNote(-1);
+  });
+  minus.onClick.listen((MouseEvent me) {
+    mainBoard.removeActiveNote();
   });
 }

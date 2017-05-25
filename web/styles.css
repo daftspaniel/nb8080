@@ -33,3 +33,9 @@ html, body {
     font-size: 25pt;
     padding: 10px;
 }
+
+#minusButton {
+    color: white;
+    font-size: 32pt;
+    padding: 10px;
+}

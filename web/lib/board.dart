@@ -70,12 +70,27 @@ class Board {
     newNote.board = this;
     notes.add(newNote);
     setActiveNote(newNote);
+    newNote.note.focus();
   }
 
   void setActiveNote(Note note) {
     activeNote = note;
     notes.forEach((Note note) => note.note.style.zIndex = '10');
     activeNote.note.style.zIndex = '100';
+  }
+
+  void removeActiveNote() {
+    if (activeNote != null) {
+      Ids.remove(int.parse(activeNote.id));
+      storeValue('AllNoteIds', JSON.encode(Ids));
+      activeNote.deleteNote();
+      activeNote.note.remove();
+      notes.remove(activeNote);
+    }
+
+    if (notes.length > 0) {
+      activeNote = notes[0];
+    }
   }
 }
 

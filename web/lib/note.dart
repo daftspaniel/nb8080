@@ -25,6 +25,13 @@ class Note {
       y = e.client.y - (note.offsetTop);
       board.setActiveNote(this);
     });
+
+    note.onDragStart.listen((e) {
+      note.style.opacity = "0.2";
+    });
+    note.onDragEnd.listen((e) {
+      note.style.opacity = "1";
+    });
   }
 
   void saveNote() {
@@ -35,7 +42,6 @@ class Note {
     String stored = getStoredValue(id, null);
 
     if (stored == null) {
-      print("Creating default for $id");
       createAndSaveDefaultNote();
     } else {
       plainNote = JSON.decode(stored);
@@ -43,6 +49,10 @@ class Note {
       note.style.top = plainNote['top'];
       note.style.left = plainNote['left'];
     }
+  }
+
+  void deleteNote() {
+    deleteStoredValue(id);
   }
 
   void createAndSaveDefaultNote() {
