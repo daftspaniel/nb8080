@@ -1,15 +1,18 @@
 import 'dart:convert';
 import 'dart:html';
 
+import 'htmlutil.dart';
 import 'localstorageutil.dart';
 import 'note.dart';
 
 class Board {
 
-  final int noteWidth = 200;
+  final DivElement board = querySelector('#board');
+  final InputElement backColor = querySelector('#backColorPick');
+  final InputElement foreColor = querySelector('#foreColorPick');
 
+  final int noteWidth = 200;
   int newId = -1;
-  DivElement board = querySelector('#board');
   Note activeNote;
   List<int> Ids = new List<int>();
   List<Note> notes = new List<Note>();
@@ -17,6 +20,8 @@ class Board {
   Board() {
     setupEventHandlers();
     newId = int.parse(getStoredValue("newId", "1"));
+    backColor.value = getStoredValue('noteBackColor', '#f1f555');
+    foreColor.value = getStoredValue('foreBackColor', '#000000');
   }
 
   void loadNotes() {
@@ -37,6 +42,29 @@ class Board {
     board.onDrop.listen((MouseEvent e) {
       activeNote.move(e.page.x - activeNote.x, e.page.y - activeNote.y);
     });
+
+    backColor.onChange.listen((Event e) {
+      storeValue('noteBackColor', backColor.value);
+      activeNote.backColor = backColor.value;
+    });
+
+    foreColor.onChange.listen((Event e) {
+      storeValue('foreBackColor', foreColor.value);
+      activeNote.foreColor = foreColor.value;
+    });
+  }
+
+  void putNoteColorsInPicker() {
+    backColor.value = getHexColor(activeNote.note.style.backgroundColor);
+    foreColor.value = getHexColor(activeNote.note.style.color);
+  }
+
+  String get selectedBackColor {
+    return backColor.value;
+  }
+
+  String get selectedForeColor {
+    return foreColor.value;
   }
 
   String getNewNoteID() {
@@ -53,7 +81,9 @@ class Board {
     newNoteDiv
       ..classes.add('note')
       ..draggable = true
-      ..contentEditable = 'true';
+      ..contentEditable = 'true'
+      ..style.backgroundColor = backColor.value
+      ..style.color = foreColor.value;
     board.append(newNoteDiv);
     newNoteDiv.focus();
 
@@ -61,16 +91,17 @@ class Board {
     Note newNote;
     if (i < 0) {
       id = getNewNoteID();
-      newNote = new Note(newNoteDiv, id);
-      newNote.saveNote();
+      newNote = new Note(newNoteDiv, id, this);
+      newNote
+        ..move(75, 75)
+        ..save();
     }
     else {
       id = i.toString();
-      newNote = new Note(newNoteDiv, id);
-      newNote.loadNote();
+      newNote = new Note(newNoteDiv, id, this);
+      newNote.load();
     }
 
-    newNote.board = this;
     notes.add(newNote);
     setActiveNote(newNote);
     newNote.note.focus();
@@ -86,7 +117,7 @@ class Board {
     if (activeNote != null) {
       Ids.remove(int.parse(activeNote.id));
       storeValue('AllNoteIds', JSON.encode(Ids));
-      activeNote.deleteNote();
+      activeNote.delete();
       activeNote.note.remove();
       notes.remove(activeNote);
     }

@@ -1,22 +1,22 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto);
 
 html, body {
-    width: 100%;
-    height: 100%;
     margin: 0;
     padding: 0;
     font-family: 'Roboto', sans-serif;
-    overflow: visible;
+    overflow: auto;
+    background-color: cornflowerblue;
 }
 
 .board {
     height: 100vh;
-    background-color: cornflowerblue;
+
     overflow: auto;
 }
 
 .note {
     position: absolute;
+    color: #000000;
     background-color: #f1f555;
     padding: 5px;
     box-shadow: 6px 6px 3px #333333;
@@ -31,7 +31,7 @@ html, body {
 }
 
 .note:focus {
-    box-shadow: 6px 6px 6px #33ee33;
+    box-shadow: 6px 6px 6px #cbc5d2;
     background-color: #f4f858;
 }
 
@@ -53,9 +53,12 @@ html, body {
     padding: 10px;
 }
 
-#colorPick {
-    padding-top: 20px;
-    height: 60px;
+#foreColorPick {
+    max-width: 30px;
+}
+
+#backColorPick {
+    max-width: 30px;
 }
 
 #sidebar {
@@ -64,4 +67,8 @@ html, body {
     height: 100%;
     text-align: center;
     color: white;
+}
+
+.sideControl {
+    height: 40px;
 }
