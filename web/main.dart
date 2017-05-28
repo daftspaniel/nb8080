@@ -3,6 +3,8 @@
 
 import 'dart:html';
 
+import 'package:pwa/client.dart' as pwa;
+
 import 'lib/board.dart';
 
 DivElement add = querySelector('#addButton');
@@ -11,6 +13,7 @@ DivElement arrange = querySelector('#arrangeButton');
 Board mainBoard = new Board();
 
 void main() {
+  new pwa.Client();
   mainBoard.loadNotes();
 
   add.onClick.listen((MouseEvent me) {
