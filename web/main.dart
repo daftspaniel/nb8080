@@ -17,12 +17,12 @@ void main() {
   mainBoard.loadNotes();
 
   add.onClick.listen((MouseEvent me) {
-    mainBoard.addNote(-1);
+    mainBoard.addNote();
   });
   minus.onClick.listen((MouseEvent me) {
     mainBoard.removeActiveNote();
   });
   arrange.onClick.listen((MouseEvent me) {
-    mainBoard.arrange();
+    mainBoard.arrangeNotes();
   });
 }

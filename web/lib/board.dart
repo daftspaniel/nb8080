@@ -10,15 +10,19 @@ class Board {
   final DivElement board = querySelector('#board');
   final InputElement backColor = querySelector('#backColorPick');
   final InputElement foreColor = querySelector('#foreColorPick');
+  final List<Note> notes = new List<Note>();
 
   final int noteWidth = 200;
   int newId = -1;
   Note activeNote;
   List<int> Ids = new List<int>();
-  List<Note> notes = new List<Note>();
 
   Board() {
     setupEventHandlers();
+    initState();
+  }
+
+  void initState() {
     newId = int.parse(getStoredValue("newId", "1"));
     backColor.value = getStoredValue('noteBackColor', '#f1f555');
     foreColor.value = getStoredValue('foreBackColor', '#000000');
@@ -46,11 +50,13 @@ class Board {
     backColor.onChange.listen((Event e) {
       storeValue('noteBackColor', backColor.value);
       activeNote.backColor = backColor.value;
+      activeNote.save();
     });
 
     foreColor.onChange.listen((Event e) {
       storeValue('foreBackColor', foreColor.value);
       activeNote.foreColor = foreColor.value;
+      activeNote.save();
     });
   }
 
@@ -76,7 +82,7 @@ class Board {
     return claimedId.toString();
   }
 
-  void addNote(int i) {
+  void addNote([int i = -1]) {
     DivElement newNoteDiv = new DivElement();
     newNoteDiv
       ..classes.add('note')
@@ -114,23 +120,27 @@ class Board {
   }
 
   void removeActiveNote() {
-    if (activeNote != null) {
-      Ids.remove(int.parse(activeNote.id));
-      storeValue('AllNoteIds', JSON.encode(Ids));
-      activeNote.delete();
-      activeNote.note.remove();
-      notes.remove(activeNote);
-    }
+    if (window.confirm(
+        "Are you sure you want to delete this note?")) {
+      if (activeNote != null) {
+        Ids.remove(int.parse(activeNote.id));
+        storeValue('AllNoteIds', JSON.encode(Ids));
+        activeNote.delete();
+        activeNote.note.remove();
+        notes.remove(activeNote);
+      }
 
-    if (notes.length > 0) {
-      activeNote = notes[0];
+      if (notes.length > 0) {
+        activeNote = notes[0];
+      }
     }
   }
 
-  void arrange() {
+  void arrangeNotes() {
     int x = 60;
     int y = 30;
     int sx = 60;
+    int z = 0;
     notes.forEach((Note note) {
       note.move(x, y);
       x = x + noteWidth + 30;
@@ -139,6 +149,9 @@ class Board {
         sx += 10;
         x = sx;
       }
+      note.note.focus();
+      note.note.style.zIndex = z.toString();
+      z++;
     });
   }
 }
