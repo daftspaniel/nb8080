@@ -8,10 +8,7 @@ A light notes board application similar to
 Clientside only - no server/syncing/spying etc!
 
 TODO Feature list:
-- Multiple notes
-- Offline
-- Colour picker
-- Differ note types
+- Different note types
 - Download / Export view
 
 You can [try it out here](https://daftspaniel.github.io/demos/nb8080/). 
