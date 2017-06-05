@@ -61,8 +61,8 @@ class Board {
   }
 
   void putNoteColorsInPicker() {
-    backColor.value = getHexColor(activeNote.note.style.backgroundColor);
-    foreColor.value = getHexColor(activeNote.note.style.color);
+    backColor.value = getHexColor(activeNote.textArea.style.backgroundColor);
+    foreColor.value = getHexColor(activeNote.textArea.style.color);
   }
 
   String get selectedBackColor {
@@ -84,39 +84,47 @@ class Board {
 
   void addNote([int i = -1]) {
     DivElement newNoteDiv = new DivElement();
-    newNoteDiv
+    //   newNoteDiv
+
+    TextAreaElement textArea = new TextAreaElement();
+    textArea
       ..classes.add('note')
       ..draggable = true
-      ..contentEditable = 'true'
       ..style.backgroundColor = backColor.value
       ..style.color = foreColor.value;
-    board.append(newNoteDiv);
+
+    //board.append(newNoteDiv);
+    board.append(textArea);
     newNoteDiv.focus();
+    textArea.focus();
 
     String id;
     Note newNote;
     if (i < 0) {
+      print('new note');
       id = getNewNoteID();
-      newNote = new Note(newNoteDiv, id, this);
+      newNote = new Note(textArea, id, this);
+      textArea.value = 'New note!';
+
       newNote
         ..move(75, 75)
         ..save();
     }
     else {
       id = i.toString();
-      newNote = new Note(newNoteDiv, id, this);
+      newNote = new Note(textArea, id, this);
       newNote.load();
     }
 
     notes.add(newNote);
     setActiveNote(newNote);
-    newNote.note.focus();
+    newNote.textArea.focus();
   }
 
   void setActiveNote(Note note) {
     activeNote = note;
-    notes.forEach((Note note) => note.note.style.zIndex = '10');
-    activeNote.note.style.zIndex = '100';
+    notes.forEach((Note note) => note.textArea.style.zIndex = '10');
+    activeNote.textArea.style.zIndex = '100';
   }
 
   void removeActiveNote() {
@@ -126,7 +134,7 @@ class Board {
         Ids.remove(int.parse(activeNote.id));
         storeValue('AllNoteIds', JSON.encode(Ids));
         activeNote.delete();
-        activeNote.note.remove();
+        activeNote.textArea.remove();
         notes.remove(activeNote);
       }
 
@@ -149,8 +157,8 @@ class Board {
         sx += 10;
         x = sx;
       }
-      note.note.focus();
-      note.note.style.zIndex = z.toString();
+      note.textArea.focus();
+      note.textArea.style.zIndex = z.toString();
       z++;
     });
   }

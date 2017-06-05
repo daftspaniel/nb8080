@@ -11,42 +11,56 @@ class Note {
   int x = 0;
   int y = 0;
 
-  DivElement note;
+  TextAreaElement textArea;
   Board board;
 
   void set backColor(String value) {
-    note.style.backgroundColor = value;
+    textArea.style.backgroundColor = value;
   }
 
   void set foreColor(String value) {
-    note.style.color = value;
+    textArea.style.color = value;
   }
 
-  Note(DivElement newNote, String newId, Board newBoard) {
-    id = newId;
-    note = newNote;
-    board = newBoard;
-
-    note.onKeyUp.listen((KeyboardEvent k) {
+  Note(this.textArea, this.id, this.board) {
+    textArea.onKeyUp.listen((KeyboardEvent k) {
+      print('keyup');
       save();
     });
 
-    note.onMouseDown.listen((MouseEvent e) {
-      x = e.client.x - (note.offsetLeft);
-      y = e.client.y - (note.offsetTop);
-      note.style.transition = 'none';
-      board.setActiveNote(this);
-      board.putNoteColorsInPicker();
+    textArea.onMouseDown.listen((MouseEvent e) {
+      notePickup(e.client.x, e.client.y);
     });
 
-    note.onDragStart.listen((e) {
-      note.style.opacity = "0.2";
+    textArea.onTouchStart.listen((TouchEvent e) {
+      notePickup(e.touches.first.client.x, e.touches.first.client.y);
     });
 
-    note.onDragEnd.listen((e) {
-      note.style.opacity = "1";
-      note.style.transition = 'top 0.5s, left 0.5s';
+    textArea.onTouchEnd.listen((TouchEvent e) {
+      print("end");
     });
+
+    textArea.onTouchMove.listen((TouchEvent e) {
+      print("move");
+      move(e.touches.first.client.x, e.touches.first.client.y);
+    });
+
+    textArea.onDragStart.listen((e) {
+      textArea.style.opacity = "0.2";
+    });
+
+    textArea.onDragEnd.listen((e) {
+      textArea.style.opacity = "1";
+      textArea.style.transition = 'top 0.5s, left 0.5s';
+    });
+  }
+
+  void notePickup(int px, int py) {
+    x = px - (textArea.offsetLeft);
+    y = py - (textArea.offsetTop);
+    textArea.style.transition = 'none';
+    board.setActiveNote(this);
+    board.putNoteColorsInPicker();
   }
 
   void load() {
@@ -56,17 +70,17 @@ class Note {
       create();
     } else {
       plainNote = JSON.decode(stored);
-      note.innerHtml = plainNote['text'];
-      note.style.top = plainNote['top'];
-      note.style.left = plainNote['left'];
+      textArea.style.top = plainNote['top'];
+      textArea.style.left = plainNote['left'];
+      textArea.value = plainNote['text'];
 
       if (plainNote['color'] == null)
         plainNote['color'] = '#000000';
       if (plainNote['background-color'] == null)
         plainNote['background-color'] = '#ffffff';
 
-      note.style.color = plainNote['color'];
-      note.style.backgroundColor = plainNote['background-color'];
+      textArea.style.color = plainNote['color'];
+      textArea.style.backgroundColor = plainNote['background-color'];
     }
   }
 
@@ -80,23 +94,24 @@ class Note {
     plainNote['left'] = "100px";
     plainNote['color'] = board.selectedForeColor;
     plainNote['background-color'] = board.selectedBackColor;
-    note.innerHtml = plainNote['text'];
 
+    textArea.value = plainNote['text'];
     move(75, 75);
   }
 
   void save() {
-    plainNote['text'] = note.innerHtml;
-    plainNote['left'] = note.style.left;
-    plainNote['top'] = note.style.top;
-    plainNote['color'] = note.style.color;
-    plainNote['background-color'] = note.style.backgroundColor;
+    plainNote['text'] = textArea.value;
+    plainNote['left'] = textArea.style.left;
+    plainNote['top'] = textArea.style.top;
+    plainNote['color'] = textArea.style.color;
+    plainNote['background-color'] = textArea.style.backgroundColor;
+
     storeValue(id, JSON.encode(plainNote));
   }
 
   void move(int mx, int my) {
-    note.style.top = "${my}px";
-    note.style.left = "${mx}px";
+    textArea.style.top = "${my}px";
+    textArea.style.left = "${mx}px";
     save();
   }
 
