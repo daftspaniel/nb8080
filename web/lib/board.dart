@@ -83,8 +83,6 @@ class Board {
   }
 
   void addNote([int i = -1]) {
-    DivElement newNoteDiv = new DivElement();
-    //   newNoteDiv
 
     TextAreaElement textArea = new TextAreaElement();
     textArea
@@ -93,9 +91,8 @@ class Board {
       ..style.backgroundColor = backColor.value
       ..style.color = foreColor.value;
 
-    //board.append(newNoteDiv);
     board.append(textArea);
-    newNoteDiv.focus();
+
     textArea.focus();
 
     String id;
@@ -145,10 +142,14 @@ class Board {
   }
 
   void arrangeNotes() {
-    int x = 60;
+
+    int sx = 110;
     int y = 30;
-    int sx = 60;
+    int x = sx;
     int z = 0;
+    print(sx);
+    print(sx);
+
     notes.forEach((Note note) {
       note.move(x, y);
       x = x + noteWidth + 30;

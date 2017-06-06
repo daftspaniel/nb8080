@@ -23,6 +23,9 @@ class Note {
   }
 
   Note(this.textArea, this.id, this.board) {
+
+    setStyleOnTextArea();
+
     textArea.onKeyUp.listen((KeyboardEvent k) {
       print('keyup');
       save();
@@ -50,9 +53,13 @@ class Note {
     });
 
     textArea.onDragEnd.listen((e) {
-      textArea.style.opacity = "1";
-      textArea.style.transition = 'top 0.5s, left 0.5s';
+      setStyleOnTextArea();
     });
+  }
+
+  void setStyleOnTextArea() {
+    textArea.style.opacity = "1";
+    textArea.style.transition = 'top 0.5s, left 0.5s';
   }
 
   void notePickup(int px, int py) {
